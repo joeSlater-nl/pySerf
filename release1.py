@@ -101,7 +101,7 @@ def popup():
             writer = csv.writer(csv_res, delimiter = ';')
 
             for line in data:
-                writer.writerow(line)
+                writer.writerows(line)
 
     if __name__ == '__main__':
         data = [top]
