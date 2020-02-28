@@ -93,7 +93,21 @@ def comparison():
         k+=1
 
 
-def saveCsv():
+def popup():
+    def res(data, path):
+
+    #file_name = fd.asksaveasfilename(filetypes = ())
+        with open(path, 'w', newline='') as csv_res:
+            writer = csv.writer(csv_res, delimiter = ';')
+
+            for line in data:
+                writer.writerow(line)
+
+    if __name__ == '__main__':
+        data = [top]
+        path = "res11112.csv"
+        res(data, path)
+
 
 
 root = Tk()
@@ -103,7 +117,7 @@ entyProg = Entry().grid(row = 0 , column = 1, columnspan = 10)
 buttonExcel = Button(text = 'Отрыть файл Эксель', command = openEXCEL).grid(row = 1, column = 0)
 entryExcel = Entry().grid(row = 1, column = 2, columnspan = 10)
 buttonComparison = Button (text = 'получение программ' , command = comparison).grid(row = 2, column = 8)
-
+buttonSaveTop = Button (text ='сохранить TOP' , command = popup).grid(row = 2, column = 10)
 
 
 root = mainloop()
