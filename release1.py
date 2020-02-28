@@ -124,4 +124,4 @@ root = mainloop()
 
 print(len(res))
 print(len(bot))
-print(len(top))
+print(top)
