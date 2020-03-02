@@ -1,7 +1,8 @@
-#!/usr/local/bin/python3.8
+#!/usr/local/bin/python3
 import csv
 from tkinter import *
 from tkinter import filedialog as fd
+from tkinter import messagebox as mb
 from bs4 import BeautifulSoup
 import xlrd
 
@@ -12,11 +13,13 @@ res = []
 mirrorNew = []
 bot = []
 top = []
-b1 = []
+bot32=[]
+top32 = []
 def open_html():
     global data_html ,reference, mirror
     filename = fd.askopenfilename(filetypes = [('HTM files', '*.htm'), ('ALL files', '*.*')])
-
+    entyProg.delete(0, END)
+    entyProg.insert(0, filename)
     with open(filename, 'r') as dataHtml:
         content = dataHtml.read()
         soup = BeautifulSoup(content, 'lxml')
@@ -58,8 +61,9 @@ def open_html():
 
 def openEXCEL():
     global reference_excel
-
-    filenameXL = fd.askopenfilename()
+    filenameXL = fd.askopenfilename(filetypes = [('EXCEL file', '*.xls'),('ALL files', '*.*')] )
+    entryExcel.delete(0, END)
+    entryExcel.insert(0, filenameXL)
 
     df = xlrd.open_workbook(filenameXL)
     sheet = df.sheet_by_index(0)
@@ -71,12 +75,13 @@ def openEXCEL():
     reference_excel = reference_excel.split()
 
 def comparison():
-    global res, data_html, reference, reference_excel, bot, b1
+    global res, data_html, reference, reference_excel, bot
     j = 0
     k = 0
     rb = 0
     rt = 0
-
+    b32 = 0
+    t32 = 0
     while j < len(reference):
         if reference[j] in reference_excel:
             res.append(data_html[j])
@@ -100,7 +105,7 @@ def comparison():
         elif bot[rb][5] == '90.000':
             bot[rb][5] = '270'
         rb+=1
-
+    #приводим топ к виду без *.000
     while rt < len(top):
         if top[rt][5] == '180.000':
             top[rt][5] = '180'
@@ -110,9 +115,21 @@ def comparison():
             top[rt][5] = '90'
         elif top[rt][5] == '270.000':
             top[rt][5] = '270'
-
         rt+=1
 
+    #проверка на 32 символа
+
+    while b32 < len(bot):
+        if len(bot[b32][1]+bot[b32][2]) > 32:
+            mb.showwarning('Внимание', bot[b32])
+        b32+=1
+
+
+   # while t32 < len(top):
+    #    if len(top[t32][1]+top[t32][2]) > 32:
+     #       mb.showwarning('Внимание')
+#
+ #       t32+=1
 
 
 def saveTop():
@@ -148,11 +165,16 @@ def saveBot():
 root = Tk()
 
 buttonProg = Button(text = 'Открыть файл программы', command = open_html).grid(row = 0, column = 0)
-entyProg = Entry().grid(row = 0 , column = 1, columnspan = 15)
+entyProg = Entry()
+entyProg.grid(row = 0 , column = 1, columnspan = 15)
 buttonExcel = Button(text = 'Отрыть файл Эксель', command = openEXCEL).grid(row = 1, column = 0)
-entryExcel = Entry().grid(row = 1, column = 2, columnspan = 15
+entryExcel = Entry()
+entryExcel.grid(row = 1, column = 2, columnspan = 15)
 buttonComparison = Button (text = 'получение программ' , command = comparison).grid(row = 2, column = 8)
 buttonSaveTop = Button (text ='сохранить TOP' , command = saveTop).grid(row = 2, column = 9)
 buttonSaveBot = Button (text = 'сохранить BOT', command = saveBot).grid(row = 2, column = 10)
 
 root = mainloop()
+
+print()
+print(len(bot[1][1]+bot[1][2]))
