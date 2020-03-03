@@ -124,41 +124,23 @@ def comparison():
             mb.showwarning('Внимание', bot[b32])
         b32+=1
 
+        
 
-   # while t32 < len(top):
-    #    if len(top[t32][1]+top[t32][2]) > 32:
-     #       mb.showwarning('Внимание')
-#
- #       t32+=1
+def savePath(data, path):
+    with open(path, 'w', newline='') as csv_res:
+        writer = csv.writer(csv_res, delimiter = ';')
+        for line in data:
+            writer.writerows(line)
+            
+def resTop():
+    data = [top]
+    path = fd.asksaveasfilename(filetypes = [('CSV files', '*.csv'), ('ALL files', '*.* ')], defaultextension ='.csv')
+    savePath(data, path)
 
-
-def saveTop():
-    def resTop(data, path):
-
-        with open(path, 'w', newline='') as csv_res:
-            writer = csv.writer(csv_res, delimiter = ';')
-
-            for line in data:
-                writer.writerows(line)
-
-    if __name__ == '__main__':
-        data = [top]
-        path = fd.asksaveasfilename(filetypes = [('CSV files', '*.csv'), ('ALL files', '*.* ')], defaultextension ='.csv')
-        resTop(data, path)
-
-def saveBot():
-    def resBot(data, path):
-
-        with open(path, 'w', newline='') as csv_res:
-            writer = csv.writer(csv_res, delimiter = ';')
-
-            for line in data:
-                writer.writerows(line)
-
-    if __name__ == '__main__':
-        data = [bot]
-        path = fd.asksaveasfilename(filetypes = [('CSV files', '*.csv'), ('ALL files', '*.* ')], defaultextension ='.csv')
-        resBot(data, path)
+def resBot():
+    data = [bot]
+    path = fd.asksaveasfilename(filetypes = [('CSV files', '*.csv'), ('ALL files', '*.* ')], defaultextension ='.csv')
+    resBot(data, path)
 
 
 
@@ -175,6 +157,3 @@ buttonSaveTop = Button (text ='сохранить TOP' , command = saveTop).grid
 buttonSaveBot = Button (text = 'сохранить BOT', command = saveBot).grid(row = 2, column = 10)
 
 root = mainloop()
-
-print()
-print(len(bot[1][1]+bot[1][2]))
