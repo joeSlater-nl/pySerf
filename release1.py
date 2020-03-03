@@ -132,12 +132,12 @@ def savePath(data, path):
         for line in data:
             writer.writerows(line)
             
-def resTop():
+def saveTop():
     data = [top]
     path = fd.asksaveasfilename(filetypes = [('CSV files', '*.csv'), ('ALL files', '*.* ')], defaultextension ='.csv')
     savePath(data, path)
 
-def resBot():
+def saveBot():
     data = [bot]
     path = fd.asksaveasfilename(filetypes = [('CSV files', '*.csv'), ('ALL files', '*.* ')], defaultextension ='.csv')
     resBot(data, path)
