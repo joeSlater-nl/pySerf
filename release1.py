@@ -140,7 +140,7 @@ def saveTop():
 def saveBot():
     data = [bot]
     path = fd.asksaveasfilename(filetypes = [('CSV files', '*.csv'), ('ALL files', '*.* ')], defaultextension ='.csv')
-    resBot(data, path)
+    savePath(data, path)
 
 
 
