@@ -80,8 +80,24 @@ def openEXCEL():
     reference_excel = ''.join(reference_excel)
     reference_excel = reference_excel.split()
 
+def btn1111():
+    pass
 
-def editFile32():
+def dialog_window():
+    window = Tk()
+    window.title('хуй соси')
+    window.geometry("300x175")
+
+    lbox = Listbox(window, width = 50)
+    for i, data in enumerate(bot32):
+        lbox.insert(0, bot32[i])
+
+    btnExit = Button(window, text = 'выйти', width = 10, command = window.destroy)
+    
+    lbox.pack()
+    btnExit.pack()
+    window.mainloop()
+
 
 
 def comparison():
@@ -92,6 +108,7 @@ def comparison():
     rt = 0
     b32 = 0
     t32 = 0
+
     while j < len(reference):
         if reference[j] in reference_excel:
             res.append(data_html[j])
@@ -130,16 +147,16 @@ def comparison():
     # проверка на 32 символа
     while b32 < len(bot):
         if len(bot[b32][1] + bot[b32][2]) > 32:
-
-            save_responce = mb.askyesnocancel('проверка на 32 символа', 'изменить')
-            if save_responce is True:
-                print(bot[b32])
-
-            if save_responce is False:
-                break
+            bot32.append(bot[b32])
         b32 += 1
+    if len(bot32) > 0:
 
-
+        save_responce = mb.askyesnocancel('проверка на 32 символа', 'изменить')
+        if save_responce is True:
+            dialog_window()
+        if save_responce is False:
+            pass
+    print(bot32)
 
 def savePath(data, path):
     with open(path, 'w', newline='') as csv_res:
@@ -157,7 +174,7 @@ def saveTop():
 def saveBot():
     data = [bot]
     path = fd.asksaveasfilename(filetypes=[('CSV files', '*.csv'), ('ALL files', '*.* ')], defaultextension='.csv')
-    savePath(data, path)
+    savePate(data, path)
 
 
 root = Tk()
@@ -167,9 +184,8 @@ entyProg = Entry()
 entyProg.grid(row=0, column=1, columnspan=15)
 buttonExcel = Button(text='Отрыть файл Эксель', command=openEXCEL).grid(row=1, column=0)
 entryExcel = Entry()
-entryExcel.grid(row=1, column=2, columnspan=15)
+entryExcel.grid(row=1, column=2, columnspan = 50)
 buttonComparison = Button(text='получение программ', command=comparison).grid(row=2, column=8)
 buttonSaveTop = Button(text='сохранить TOP', command=saveTop).grid(row=2, column=9)
 buttonSaveBot = Button(text='сохранить BOT', command=saveBot).grid(row=2, column=10)
-
 root = mainloop()
