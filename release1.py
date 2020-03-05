@@ -16,7 +16,6 @@ top = []
 bot32 = []
 top32 = []
 
-
 def open_html():
     global data_html, reference, mirror
     filename = fd.askopenfilename(filetypes=[('HTM files', '*.htm'), ('ALL files', '*.*')])
@@ -63,7 +62,6 @@ def open_html():
 
     data_html = split_for_csv(data_html, 6)
 
-
 def openEXCEL():
     global reference_excel
     filenameXL = fd.askopenfilename(filetypes=[('EXCEL file', '*.xls'), ('ALL files', '*.*')])
@@ -80,26 +78,38 @@ def openEXCEL():
     reference_excel = ''.join(reference_excel)
     reference_excel = reference_excel.split()
 
-def btn1111():
-    pass
+#№получение строки с pack+value > 32 символов для редактирования
+def getE(event):
+    global st
+    e1 = lbox.curselection()[0]
+    st = lbox.get(e1)
 
-def dialog_window():
+    eAll.delete(0, END)
+    eAll.insert(0, st)
+    e32.delete(0, END)
+    e32.insert(0, len(st[1]+st[2]))
+
+
+
+def dialog_window(event = 0):
+    global eAll, lbox, window, e32
     window = Tk()
     window.title('хуй соси')
     window.geometry("300x175")
-
+    eAll = Entry(window)
+    e32 = Entry(window)
     lbox = Listbox(window, width = 50)
     for i, data in enumerate(bot32):
         lbox.insert(0, bot32[i])
 
     btnExit = Button(window, text = 'выйти', width = 10, command = window.destroy)
-    
+    eAll.pack()
+    e32.pack()
     lbox.pack()
     btnExit.pack()
+    window.bind('<Double-Button-1>', getE)
+
     window.mainloop()
-
-
-
 def comparison():
     global res, data_html, reference, reference_excel, bot
     j = 0
@@ -156,7 +166,6 @@ def comparison():
             dialog_window()
         if save_responce is False:
             pass
-    print(bot32)
 
 def savePath(data, path):
     with open(path, 'w', newline='') as csv_res:
@@ -164,18 +173,15 @@ def savePath(data, path):
         for line in data:
             writer.writerows(line)
 
-
 def saveTop():
     data = [top]
     path = fd.asksaveasfilename(filetypes=[('CSV files', '*.csv'), ('ALL files', '*.* ')], defaultextension='.csv')
     savePath(data, path)
 
-
 def saveBot():
     data = [bot]
     path = fd.asksaveasfilename(filetypes=[('CSV files', '*.csv'), ('ALL files', '*.* ')], defaultextension='.csv')
     savePate(data, path)
-
 
 root = Tk()
 
