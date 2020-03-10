@@ -16,11 +16,11 @@ top = []
 bot32 = []
 top32 = []
 
+len_bot32= len(bot32)
+
 def open_html():
     global data_html, reference, mirror
     filename = fd.askopenfilename(filetypes=[('HTM files', '*.htm'), ('ALL files', '*.*')])
-    #entyProg.delete(0, END)
-    #entyProg.insert(0, filename)
     with open(filename, 'r') as dataHtml:
         content = dataHtml.read()
         soup = BeautifulSoup(content, 'lxml')
@@ -65,8 +65,6 @@ def open_html():
 def openEXCEL():
     global reference_excel
     filenameXL = fd.askopenfilename(filetypes=[('EXCEL file', '*.xls'), ('ALL files', '*.*')])
-    #entryExcel.delete(0, END)
-    #entryExcel.insert(0, filenameXL)
 
     df = xlrd.open_workbook(filenameXL)
     sheet = df.sheet_by_index(0)
@@ -78,6 +76,7 @@ def openEXCEL():
     reference_excel = ''.join(reference_excel)
     reference_excel = reference_excel.split()
 
+# получение строки с pack+value > 32 символов для редактирования
 def comparison():
     global res, data_html, reference, reference_excel, bot
     j = 0
@@ -126,13 +125,14 @@ def comparison():
     while b32 < len(bot):
         if len(bot[b32][1] + bot[b32][2]) > 32:
             bot32.append(bot[b32])
+
         b32 += 1
 
     if len(bot32) > 0:
 
         save_responce = mb.askyesno('проверка на 32 символа', 'изменить??')
         if save_responce is True:
-            GUI()
+            window_edit32()
         if save_responce is False:
             pass
 
@@ -152,10 +152,8 @@ def saveBot():
     path = fd.asksaveasfilename(filetypes=[('CSV files', '*.csv'), ('ALL files', '*.* ')], defaultextension='.csv')
     savePath(data, path)
 
-def saveChange():
-    pass
 
-class GUI():
+class window_edit32():
     def __init__(self):
         self.root = Tk()
         self.sv = StringVar(self.root)
@@ -166,7 +164,7 @@ class GUI():
         self.entryQ = Entry(self.root, width=5)
         self.entryQ.grid(row=0, column=1)
         self.btn_exit = Button(self.root, text='Выйти', command=self.root.destroy).grid(row=0, column=2)
-        self.btn_save_change = Button(self.root, text='сохранить изменения').grid(row=1, column=2)
+        self.btn_save_change = Button(self.root, text='сохранить изменения', command = self.add_change).grid(row=1, column=2)
         for i in bot32:
             self.lbox.insert(0, i)
         self.root.bind('<Double-Button-1>', self.getE)
@@ -184,6 +182,12 @@ class GUI():
 
         self.entry.delete(0, END)
         self.entry.insert(0, self.st)
+    def add_change(self):
+        bot.append(str(self.entry.get()).split())
+        for i,data in enumerate(bot):
+            if bot32[0][0] in bot[i]:
+                del bot[i]
+
 
 class Main_Menu():
     def __init__(self):
@@ -204,3 +208,4 @@ class Main_Menu():
 
 
 Main_Menu()
+print (bot)
